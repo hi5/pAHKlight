@@ -2,7 +2,7 @@
 Name          : pAHKlight - v0.1
 Purpose       : Your Lightweight Guid to AutoHotkey libraries, classes, functions and tools
 Source        : https://github.com/hi5/pAHKlight
-AHKScript     : ...
+AHKScript     : http://www.ahkscript.org/boards/viewtopic.php?f=6&t=1241
 License       : MIT - see COPYING.txt
 
 Todo          : Check for updates on database (by checking sha of GH repository)
