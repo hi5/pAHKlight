@@ -16,8 +16,7 @@ and tools quickly, especially for those unfamiliar with AutoHotkey.
 
 The pAHKlight script is short and the format for the "package database" is kept very simple so even
 a novice user should be able to update (both the script and) the database. This will hopefully ensure
-that both the pAHKlight script and database are kept up to date by posting new additions for the
-database on the forum or pull requests on Github.
+that is kept up to date by posting new additions for the database on the forum or pull requests on Github.
 
 Once you have found a "package" of interest visit the source or discussion page for more detailed
 information and (usually) instructions how install and apply the "package". 
@@ -32,7 +31,7 @@ Things pAHKlight **can not** do:
 
 Things pAHKlight **should not** do:
 
-* replicate the content of a forum by including all posted scripts. In should include packages only.
+* replicate the content of a forum by including all posted scripts. It should include packages only.
 
 ## INI Format
 
