@@ -22,7 +22,9 @@ Once you have found a "package" of interest visit the source or discussion page 
 information and (usually) instructions how install and apply the "package". 
 
 As a reminder you can tick the checkbox in front of a package if you use it and it will remember
-that for the next time so you can quickly see which packaged you are already using.
+that for the next time so you can quickly see which package you are already using.
+
+![pAHKlight user interface](https://raw.github.com/hi5/_resources/master/pahklight.png)
 
 Things pAHKlight **can not** do:
 
