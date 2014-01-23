@@ -28,7 +28,8 @@ pahklightDB.ini
 
 ; read categories
 FileRead, categories, categories.txt
-StringReplace, categories, categories, `r`n, |, All
+StringReplace, categories, categories, `r, , All
+StringReplace, categories, categories, `n, |, All
 
 ; read database
 IniRead, Sections, %dbf%
