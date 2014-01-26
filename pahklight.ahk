@@ -17,6 +17,7 @@ dbf:="pahklightDB.ini"
 use:="personal.ini"
 Keys:="name,fullname,author,type,source,forum,category,description"
 o:=[]
+errorlog:=""
 
 ; files we want to download in case of an update
 pAHKlightfiles=
@@ -56,6 +57,25 @@ Loop, parse, Sections, `n, `r
  	 if InStr("," installed ",", "," o[Idx].name ",")
  		 o[Idx,"check"]:="check"
 	 Section:="",keym:="",keym1:="",_auinfo1:="",_auinfo2:=""
+	 ; basic error checking
+	 if !InStr("|lib|class|function|tool|", "|" o[Idx].type "|")
+ 		errorlog .= "[" Idx "] " o[Idx].name ": type error`n" 
+ 	 checkcategories:=o[Idx].category
+	 Loop, parse, checkcategories, CSV 
+	 	if !InStr( "|" categories "|", "|" A_LoopField "|")
+	 		{
+	 		 errorlog .= "[" Idx "] " o[Idx].name ": category error`n" 
+	 		 break
+	 		} 
+	 if !InStr(o[Idx].source, "http") or !InStr(o[Idx].forum, "http")
+	 	errorlog .= "[" Idx "] " o[Idx].name ": source or forum error`n" 
+	}
+
+if (errorlog <> "")
+	{
+	 FileDelete, errorlog.txt
+	 FileAppend, %errorlog%, errorlog.txt
+	 errorlog:=" - please consult errorlog.txt!"
 	}
 
 ; build gui
@@ -83,7 +103,7 @@ Gui, Add, Button, xp+490 yp-5 w100 gCheckUpdate, Check for updates
 Gui, Add, Button, xp+110 yp w100 gGuiClose, E&xit
 
 Gui, Add, StatusBar,, 
-SB_SetText("   There are " o.MaxIndex() " packages in this " AppWindow " database")
+SB_SetText("   There are " o.MaxIndex() " packages in this " AppWindow " database" errorlog)
 
 LV_ModifyCol(1), LV_ModifyCol(2), LV_ModifyCol(3,380)
 LV_ModifyCol(4), LV_ModifyCol(5,0) 
