@@ -1,8 +1,13 @@
 ﻿# pAHKlight - v0.1
 
-**Introduction**
+pAHKlight - Your Lightweight Guide to [AutoHotkey](http://ahkscript.org/) libraries, classes, functions and tools.
 
-pAHKlight - Your Lightweight Guide to AutoHotkey libraries, classes, functions and tools.
+Questions or suggestions? Post it here <http://ahkscript.org/boards/viewtopic.php?f=6&t=1241> or 
+file [an issue](https://github.com/hi5/pAHKlight/issues) here on GitHub. To contribute, read
+the info about the format below, and either post new entries for the database on the forum or
+[create a pull request](https://help.github.com/articles/creating-a-pull-request).
+
+## Introduction
 
 **A package or module: a software component for accomplishing a particular thing.** (wikipedia)
 
@@ -14,19 +19,20 @@ pAHKlight is a *possible* intermediate solution until a more competent system is
 not meant as a real package manager, but its purpose is to help find libraries, classes, functions
 and tools quickly, especially for those unfamiliar with AutoHotkey.
 
-The pAHKlight script is short and the format for the "package database" is kept very simple so even
-a novice user should be able to update (both the script and) the database. This will hopefully ensure
+The pAHKlight script is fairly short and the format for the "package database" is kept very simple so even
+a novice user should be able to maintain (both the script and) the database. This will hopefully ensure
 that is kept up to date by posting new additions for the database on the forum or pull requests on Github.
 
 Once you have found a "package" of interest visit the source or discussion page for more detailed
 information and (usually) instructions how install and apply the "package". 
 
-As a reminder you can tick the checkbox in front of a package if you use it and it will remember
-that for the next time so you can quickly see which package you are already using.
+As a reminder (for yourself) you can tick the checkbox in front of a package if you use it. It will
+remember that for the next time you start pAHKlight so you can quickly see which package(s) you are
+already using.
 
 ![pAHKlight user interface](https://raw.github.com/hi5/_resources/master/pahklight.png)
 
-Things pAHKlight **can not** do:
+Things pAHKlight **can and should not** do:
 
 * download, install or update libraries, classes, functions and tools
 * check which (versions of) libraries, classes, functions and tools are currently installed
@@ -40,28 +46,32 @@ Things pAHKlight **should not** do:
 The INI format used in pahklightDB.ini has the following structure
 
    ```ini
-   [Shortname]
-   name=Full name
+   [Sequential number]
+   name=short
+   fullname=full
    author=
    type=lib|class|function|tool
    source=URL
    forum=URL
-   tags=
+   category=
    description=
    ```
 
 |Section/Key  |Description|
-|-------------|-----------|
-|[Shortname]  |Section names have to be unique. If you add a new library and the name has been taken, simply add a (serial) number to the name, for example JSON2, JSON3 etc so it becomes unique|
-|name=        |Full name used in the Gui and Browse list (listview)|
-|author=      |Main author of the script|
-|type=        |Lib, class, function or tool - only one allowed see comments below|
-|source=      |URL - can be same as forum URL below in case source is posted on a forum for example|
-|forum=       |URL - forum link|
-|tags=        |CSV list - currently not used in the Gui yet but they are included in the search|
-|description= |Purpose of the lib, class, function or tool. The entire text should be on one line due to the limitation of the INI format. Use `n if you want to display a new line|
+|-------------------|-----------|
+|[Sequential number]|Used as section names in the INI, they have to be unique|
+|name=              |Short names, usually the name of the Prefix in case of a library or class|
+|fullname=          |Full name used in the Gui (texts) and Browse list (listview)|
+|author=            |(Main) Author of the script - you can include an URL: name @ URL although not mandatory|
+|type=              |Lib, class, function or tool - only one allowed see comments below|
+|source=            |URL - can be same as forum URL below in case source is posted on a forum for example|
+|forum=             |URL - forum link|
+|category=          |CSV list (see categories.txt)|
+|description=       |Purpose of the lib, class, function or tool. The entire text should be on one line due to the limitation of the INI format. Use `n if you want to display a new line just like you would in AutoHotkey|
 
-### type
+**name, fullname, author, type, source and description are mandatory fields.**
+
+## type
 
 There are four types, you can only select one. The following brief definitions apply:
 
@@ -70,9 +80,16 @@ There are four types, you can only select one. The following brief definitions a
 * function: Standalone function for a specific task
 * tool: Helper programs to generate code (gui for example) or extend the capability of AutoHotkey. "Normal" scripts should not be included in pAHKlight.
 
+## category
+
+The category field is a comma separated value list. These can be found in categories.txt - if not present in that list the category is not accepted. Suggestions for the categories are of course welcome.
+
 ## Other Resources
 
+Attempts for defining so called Standard libraries have been made before and discussed a number of times,
+you can find some below:
+
 * Alternative: <https://github.com/Library-Distribution> Not completed, no plans for further development
-* Alternative: <http://www.autohotkey.com/board/topic/50834-ahk-standard-library-collection-2010-sep-gui-libs-100/> Last updated in 2010
+* Alternative: <http://www.autohotkey.com/board/topic/50834-ahk-standard-library-collection-2010-sep-gui-libs-100/> Last update in 2010
 * Discussion: <http://www.autohotkey.com/board/topic/49921-stdlib-call-for-information/>
 * Discussion: <http://www.autohotkey.com/board/topic/63827-libraries-in-default-ahk-installation-ahk-l/>

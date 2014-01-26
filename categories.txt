@@ -15,7 +15,8 @@ Graphics
 Gui
 INI
 Hardware
-Hotstring
+Hash
+Hotstrings
 JSON
 Keyboard
 Math
