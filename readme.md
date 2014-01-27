@@ -1,4 +1,4 @@
-﻿# pAHKlight - v0.1
+﻿# pAHKlight - v0.1.1
 
 pAHKlight - Your Lightweight Guide to [AutoHotkey](http://ahkscript.org/) libraries, classes, functions and tools.
 
