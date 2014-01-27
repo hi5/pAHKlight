@@ -54,6 +54,7 @@ The INI format used in pahklightDB.ini has the following structure
    source=URL
    forum=URL
    category=
+   ahkversion=
    description=
    ```
 
@@ -64,9 +65,10 @@ The INI format used in pahklightDB.ini has the following structure
 |fullname=          |Full name used in the Gui (texts) and Browse list (listview)|
 |author=            |(Main) Author of the script - you can include an URL: name @ URL although not mandatory|
 |type=              |Lib, class, function or tool - only one allowed see comments below|
-|source=            |URL - can be same as forum URL below in case source is posted on a forum for example|
-|forum=             |URL - forum link|
+|source=            |URL - can be same as forum URL below in case source is posted on a forum for example. Must include http(s)|
+|forum=             |URL - forum link, if used must include http(s)|
 |category=          |CSV list (see categories.txt)|
+|ahkversion=        |AHK version as indicated by the author or tested by person adding it to database|
 |description=       |Purpose of the lib, class, function or tool. The entire text should be on one line due to the limitation of the INI format. Use `n if you want to display a new line just like you would in AutoHotkey|
 
 **name, fullname, author, type, source and description are mandatory fields.**
@@ -75,8 +77,8 @@ The INI format used in pahklightDB.ini has the following structure
 
 There are four types, you can only select one. The following brief definitions apply:
 
-* lib: So called Standard and/or User Libraries (stdlib) as described briefly here <http://l.autohotkey.net/docs/Functions.htm#lib>. 
-* class: A class is an extensible template for creating objects, see <http://l.autohotkey.net/docs/Objects.htm#Custom_Classes>
+* lib: So called Standard and/or User Libraries (stdlib) as described briefly here <http://ahkscript.org/docs/Functions.htm#lib>. 
+* class: A class is an extensible template for creating objects, see <http://ahkscript.org/docs/Objects.htm#Custom_Classes>
 * function: Standalone function for a specific task
 * tool: Helper programs to generate code (gui for example) or extend the capability of AutoHotkey. "Normal" scripts should not be included in pAHKlight.
 

@@ -23,7 +23,6 @@ Math
 Media
 Memory
 Menu
-Misc.
 Network
 Objects
 Parser

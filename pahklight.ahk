@@ -15,9 +15,10 @@ Version:="v0.1.1"
 AppWindow:="pAHKlight " Version " [ AutoHotkey libraries, classes, functions and tools ]"
 dbf:="pahklightDB.ini"
 use:="personal.ini"
-Keys:="name,fullname,author,type,source,forum,category,description"
+Keys:="name,fullname,author,type,source,forum,category,ahkversion,description"
 o:=[]
 errorlog:=""
+SaveInstalled:=""
 
 ; files we want to download in case of an update
 pAHKlightfiles=
@@ -62,20 +63,25 @@ Loop, parse, Sections, `n, `r
  		errorlog .= "[" Idx "] " o[Idx].name ": type error`n" 
  	 checkcategories:=o[Idx].category
 	 Loop, parse, checkcategories, CSV 
-	 	if !InStr( "|" categories "|", "|" A_LoopField "|")
+	 	if !InStr( "|" categories "|", "|" Trim(A_LoopField) "|")
 	 		{
 	 		 errorlog .= "[" Idx "] " o[Idx].name ": category error`n" 
 	 		 break
 	 		} 
-	 if !InStr(o[Idx].source, "http") or !InStr(o[Idx].forum, "http")
-	 	errorlog .= "[" Idx "] " o[Idx].name ": source or forum error`n" 
+	 if !InStr(o[Idx].source, "http")
+	 	errorlog .= "[" Idx "] " o[Idx].name ": source URL error`n" 
+	 if (o[Idx].forum <> "") and !InStr(o[Idx].forum, "http")
+	 	errorlog .= "[" Idx "] " o[Idx].name ": forum URL error`n" 
 	}
+
+Idx:=""
 
 if (errorlog <> "")
 	{
 	 FileDelete, errorlog.txt
 	 FileAppend, %errorlog%, errorlog.txt
 	 errorlog:=" - please consult errorlog.txt!"
+	 MsgBox, 48, Possible errors, Possible errors detected while loading the database.`nPlease consult errorlog.txt and report the errors.`nThank you!
 	}
 
 ; build gui
@@ -99,8 +105,8 @@ Gui, Add, Edit, xp yP+20  w700 h150 vDescription,
  
 Gui, Add, Link, xp yP+160 w700 vSource,
 Gui, Add, Link, xp yP+20  w700 vForum,
-Gui, Add, Link, xp yp+20 vGithubLink, Help build the pAHKlight database at <a href="https://github.com/hi5/pAHKlight">Github.com</a>
-Gui, Add, Button, xp+490 yp-5 w100 gCheckUpdate vCheckUpdate, Check for updates
+Gui, Add, Link, xp yp+20  w350 vGithubLink, Help build the pAHKlight database at <a href="https://github.com/hi5/pAHKlight">Github.com</a>
+Gui, Add, Button, xp+490 yp w100 gCheckUpdate vCheckUpdate, Check for updates
 Gui, Add, Button, xp+110 yp w100 gGuiClose vExit, E&xit
 
 Gui, Add, StatusBar, vStatusBar, 
@@ -113,7 +119,7 @@ LV_ModifyCol(4), LV_ModifyCol(5,0)
 ; with the UP & DOWN keys or a mouse click so we can update the Gui 
 ; and save any changes to the personal INI
 
-Gui, Show, w720 h535, %AppWindow%
+Gui, Show, w720 h540, %AppWindow%
 TrayTip
 UpdateData()
 Return
@@ -134,6 +140,7 @@ Anchor("Forum", "w y")
 Anchor("GithubLink", "w y")
 Anchor("CheckUpdate", "x y")
 Anchor("Exit", "x y")
+Return
 
 ; Respond to mouse clicks in Listview
 MyListView:
@@ -232,7 +239,9 @@ UpdateData()
 	 GuiControl, , found, %found%
 	 GuiControl, , source, %source%
 	 GuiControl, , forum, %forum%
-	 GuiControl, , description, % NewLines(o[Idx].description)
+	 ; Using ternary logic below to determine if we have an ahkversion
+	 ; if so, display in [ .. ] (part before the :) if not simply show the descripton (part after the :)
+	 GuiControl, , description, % o[Idx].ahkversion ? "[" o[Idx].ahkversion "] - " NewLines(o[Idx].description) : NewLines(o[Idx].description)
 	}
 
 ; Google custom search
@@ -362,56 +371,59 @@ UrlDownloadToVar(URL)
 		- Version 4.60a <http://www.autohotkey.net/~polyethene/#anchor>
 		- Dedicated to the public domain (CC0 1.0) <http://creativecommons.org/publicdomain/zero/1.0/>
 */
-Anchor(i, a = "", r = false) {
-	static c, cs = 12, cx = 255, cl = 0, g, gs = 8, gl = 0, gpi, gw, gh, z = 0, k = 0xffff
-	If z = 0
-		VarSetCapacity(g, gs * 99, 0), VarSetCapacity(c, cs * cx, 0), z := true
-	If (!WinExist("ahk_id" . i)) {
-		GuiControlGet, t, Hwnd, %i%
-		If ErrorLevel = 0
+
+; Revised version for 64-bit/unicode - author unknown
+; http://www.autohotkey.com/board/topic/91997-gui-anchor-for-current-version-of-ahk/?p=580170
+
+Anchor(i, a := "", r := false) {
+	static c, cs := 12, cx := 255, cl := 0, g, gs := 8, gl := 0, gpi, gw, gh, z := 0, k := 0xffff, ptr
+	if z = 0
+		VarSetCapacity(g, gs * 99, 0), VarSetCapacity(c, cs * cx, 0), ptr := A_PtrSize ? "Ptr" : "UInt", z := true
+	if !WinExist("ahk_id" . i) {
+		GuiControlGet t, Hwnd, %i%
+		if ErrorLevel = 0
 			i := t
-		Else ControlGet, i, Hwnd, , %i%
+		else ControlGet i, Hwnd,, %i%
 	}
-	VarSetCapacity(gi, 68, 0), DllCall("GetWindowInfo", "UInt", gp := DllCall("GetParent", "UInt", i), "UInt", &gi)
+	VarSetCapacity(gi, 68, 0), DllCall("GetWindowInfo", "UInt", gp := DllCall("GetParent", "UInt", i), ptr, &gi)
 		, giw := NumGet(gi, 28, "Int") - NumGet(gi, 20, "Int"), gih := NumGet(gi, 32, "Int") - NumGet(gi, 24, "Int")
-	If (gp != gpi) {
+	if (gp != gpi) {
 		gpi := gp
-		Loop, %gl%
-			If (NumGet(g, cb := gs * (A_Index - 1)) == gp) {
+		loop %gl%
+			if NumGet(g, cb := gs * (A_Index - 1), "UInt") == gp {
 				gw := NumGet(g, cb + 4, "Short"), gh := NumGet(g, cb + 6, "Short"), gf := 1
-				Break
+				break
 			}
-		If (!gf)
-			NumPut(gp, g, gl), NumPut(gw := giw, g, gl + 4, "Short"), NumPut(gh := gih, g, gl + 6, "Short"), gl += gs
+		if !gf
+			NumPut(gp, g, gl, "UInt"), NumPut(gw := giw, g, gl + 4, "Short"), NumPut(gh := gih, g, gl + 6, "Short"), gl += gs
 	}
-	ControlGetPos, dx, dy, dw, dh, , ahk_id %i%
-	Loop, %cl%
-		If (NumGet(c, cb := cs * (A_Index - 1)) == i) {
-			If a =
-			{
-				cf = 1
-				Break
+	ControlGetPos dx, dy, dw, dh,, ahk_id %i%
+	loop %cl%
+		if NumGet(c, cb := cs * (A_Index - 1), "UInt") == i {
+			if (a = "") {
+				cf := 1
+				break
 			}
 			giw -= gw, gih -= gh, as := 1, dx := NumGet(c, cb + 4, "Short"), dy := NumGet(c, cb + 6, "Short")
 				, cw := dw, dw := NumGet(c, cb + 8, "Short"), ch := dh, dh := NumGet(c, cb + 10, "Short")
-			Loop, Parse, a, xywh
-				If A_Index > 1
+			loop Parse, a, xywh
+				if A_Index > 1
 					av := SubStr(a, as, 1), as += 1 + StrLen(A_LoopField)
 						, d%av% += (InStr("yh", av) ? gih : giw) * (A_LoopField + 0 ? A_LoopField : 1)
-			DllCall("SetWindowPos", "UInt", i, "Int", 0, "Int", dx, "Int", dy
+			DllCall("SetWindowPos", "UInt", i, "UInt", 0, "Int", dx, "Int", dy
 				, "Int", InStr(a, "w") ? dw : cw, "Int", InStr(a, "h") ? dh : ch, "Int", 4)
-			If r != 0
+			if r != 0
 				DllCall("RedrawWindow", "UInt", i, "UInt", 0, "UInt", 0, "UInt", 0x0101) ; RDW_UPDATENOW | RDW_INVALIDATE
-			Return
+			return
 		}
-	If cf != 1
+	if cf != 1
 		cb := cl, cl += cs
-	bx := NumGet(gi, 48), by := NumGet(gi, 16, "Int") - NumGet(gi, 8, "Int") - gih - NumGet(gi, 52)
-	If cf = 1
+	bx := NumGet(gi, 48, "UInt"), by := NumGet(gi, 16, "Int") - NumGet(gi, 8, "Int") - gih - NumGet(gi, 52, "UInt")
+	if cf = 1
 		dw -= giw - gw, dh -= gih - gh
-	NumPut(i, c, cb), NumPut(dx - bx, c, cb + 4, "Short"), NumPut(dy - by, c, cb + 6, "Short")
+	NumPut(i, c, cb, "UInt"), NumPut(dx - bx, c, cb + 4, "Short"), NumPut(dy - by, c, cb + 6, "Short")
 		, NumPut(dw, c, cb + 8, "Short"), NumPut(dh, c, cb + 10, "Short")
-	Return, true
+	return true
 }
 
 Esc::
