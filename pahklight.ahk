@@ -25,6 +25,7 @@ pAHKlightfiles=
 (join`n
 pahklight.ahk
 pahklightDB.ini
+categories.txt
 )
 
 ; read categories and prepare for DropDownList
