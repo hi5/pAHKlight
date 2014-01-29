@@ -7,6 +7,8 @@ file [an issue](https://github.com/hi5/pAHKlight/issues) here on GitHub. To cont
 the info about the format below, and either post new entries for the database on the forum or
 [create a pull request](https://help.github.com/articles/creating-a-pull-request).
 
+Discussion about an entirely new system here <https://trello.com/b/XVP4M76d/package-stdlib-distribution-and-management> (not related to pAHKlight)
+
 ## Introduction
 
 **A package or module: a software component for accomplishing a particular thing.** (wikipedia)
@@ -95,3 +97,4 @@ you can find some below:
 * Alternative: <http://www.autohotkey.com/board/topic/50834-ahk-standard-library-collection-2010-sep-gui-libs-100/> Last update in 2010
 * Discussion: <http://www.autohotkey.com/board/topic/49921-stdlib-call-for-information/>
 * Discussion: <http://www.autohotkey.com/board/topic/63827-libraries-in-default-ahk-installation-ahk-l/>
+* New discussion: <https://trello.com/b/XVP4M76d/package-stdlib-distribution-and-management>
