@@ -113,7 +113,7 @@ Gui, Add, Button, xp+110 yp w100 gGuiClose vExit, E&xit
 Gui, Add, StatusBar, vStatusBar, 
 SB_SetText("   There are " o.MaxIndex() " packages in this " AppWindow " database" errorlog)
 
-LV_ModifyCol(1), LV_ModifyCol(2), LV_ModifyCol(3,380)
+LV_ModifyCol(1), LV_ModifyCol(2), LV_ModifyCol(3,370)
 LV_ModifyCol(4), LV_ModifyCol(5,0) 
 ; we hide the last column (5) which holds the index we use to keep 
 ; track of which entry we are looking at while browsing the list
