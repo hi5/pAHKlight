@@ -60,7 +60,7 @@ Loop, parse, Sections, `n, `r
  		 o[Idx,"check"]:="check"
 	 Section:="",keym:="",keym1:="",_auinfo1:="",_auinfo2:=""
 	 ; basic error checking
-	 if !InStr("|lib|class|function|tool|", "|" o[Idx].type "|")
+	 if !InStr("|lib|class|function|tool|", "|" o[Idx].type "|") or InStr(o[Idx].type,"|")
  		errorlog .= "[" Idx "] " o[Idx].name ": type error`n" 
  	 checkcategories:=o[Idx].category
 	 Loop, parse, checkcategories, CSV 

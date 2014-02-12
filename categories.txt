@@ -33,6 +33,5 @@ Strings
 System
 Text
 Variables
-Window
 Windows
 YAML
